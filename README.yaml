@@ -1,0 +1,62 @@
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name : Terraform vm
+
+# License of this project
+license: "APACHE"
+
+# Canonical GitHub repo
+github_repo: git@github.com:slovink/terraform-google-vm.git
+
+
+# Badges to display
+badges:
+  - name: "Terraform"
+    image: "https://img.shields.io/badge/Terraform-v1.7.4-green"
+    url: "https://www.terraform.io"
+  - name: "Licence"
+    image: "https://img.shields.io/badge/License-APACHE-blue.svg"
+    url: "https://github.com/slovink/terraform-google-network/blob/main/LICENSE"
+  - name: "tfsec"
+    image: "https://github.com/slovink/terraform-google-network/actions/workflows/tfsec.yml/badge.svg"
+    url: "https://github.com/slovink/terraform-google-network/tree/main/.github/workflows/tfsec.yml"
+
+
+#  description of this project
+description: |-
+  This terraform module is designed to generate consistent label names and tags for resources. You can use terraform-network to implement a strict naming convention.
+
+
+# extra content
+include:
+  - "terraform.md"
+# How to use this project
+usage : |-
+  ### Simple Example
+  Here is an example of how you can use this module in your inventory structure:
+  ```hcl
+    module "compute_instance" {
+       source                 = "git::https://github.com/slovink/terraform-google-vm.git?ref=v1.0.0"
+       name                   = "ops"
+       environment            = "test"
+       instance_count         = 1
+       instance_tags          = ["foo", "bar"]
+       machine_type           = "e2-small"
+       image                  = "ubuntu-2204-jammy-v20230908"
+       gcp_zone               = "asia-northeast1-a"
+       service_account_scopes = ["cloud-platform"]
+       subnetwork             = module.subnet.subnet_id
+
+     # Enable public IP only if enable_public_ip is true
+      enable_public_ip = true
+      metadata = {
+      ssh-keys = <<EOF
+      test:ssh-rsa AAAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxbLLNM= bittu@hp
+      EOF
+   }
+  }
+  ```
