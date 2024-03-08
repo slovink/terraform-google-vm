@@ -1,5 +1,5 @@
 provider "google" {
-  project = "local-concord-408802"
+  project = "testing-gcp-ops"
   region  = "asia-northeast1"
   zone    = "asia-northeast1-a"
 }
@@ -8,7 +8,7 @@ provider "google" {
 ##### vpc module call.
 #####==============================================================================
 module "vpc" {
-  source                                    = "git::git@github.com:slovink/terraform-google-network.git?ref=update/repo"
+  source                                    = "git::https://github.com/slovink/terraform-google-network.git?ref=v1.0.0"
   name                                      = "ops"
   environment                               = "test"
   routing_mode                              = "REGIONAL"
@@ -19,7 +19,7 @@ module "vpc" {
 ##### subnet module call.
 #####==============================================================================
 module "subnet" {
-  source        = "git::git@github.com:slovink/terraform-google-subnet.git?ref=update/repo"
+  source        = "git::https://github.com/slovink/terraform-google-subnets.git?ref=v1.0.0"
   name          = "ops"
   environment   = "test"
   subnet_names  = ["subnet-ops"]
@@ -32,10 +32,10 @@ module "subnet" {
 ##### firewall module call.
 #####==============================================================================
 module "firewall" {
-  source        = "git::git@github.com:slovink/terraform-google-firewall.git?ref=update/repo"
+  source        = "git::https://github.com/slovink/terraform-google-firewall.git?ref=v1.0.0"
   name          = "ops"
   environment   = "test"
-  network       = module.vpc.vpc_id
+  network       = module.vpc.self_link
   source_ranges = ["0.0.0.0/0"]
 
   allow = [
