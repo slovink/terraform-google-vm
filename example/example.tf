@@ -33,10 +33,10 @@ module "subnet" {
 ##### firewall module call.
 #####==============================================================================
 module "firewall" {
-  source        = "git::https://github.com/slovink/terraform-google-firewall.git?ref=v1.0.0"
-  name          = "ops"
-  environment   = "test"
-  network       = module.vpc.self_link
+  source      = "git::https://github.com/slovink/terraform-google-firewall.git?ref=v1.0.0"
+  name        = "ops"
+  environment = "test"
+  network     = module.vpc.self_link
   ingress_rules = [
     {
       name          = "allow-tcp-http-ingress"
