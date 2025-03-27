@@ -40,23 +40,24 @@ usage : |-
   Here is an example of how you can use this module in your inventory structure:
   ```hcl
     module "compute_instance" {
-       source                 = "git::https://github.com/slovink/terraform-google-vm.git?ref=v1.0.0"
-       name                   = "ops"
-       environment            = "test"
-       instance_count         = 1
-       instance_tags          = ["foo", "bar"]
-       machine_type           = "e2-small"
-       image                  = "ubuntu-2204-jammy-v20230908"
-       gcp_zone               = "asia-northeast1-a"
-       service_account_scopes = ["cloud-platform"]
-       subnetwork             = module.subnet.subnet_id
+    source                 = "../"
+    name                   = "ops"
+    environment            = "test"
+    instance_count         = 1
+    instance_tags          = ["foo", "bar"]
+    machine_type           = "e2-small"
+    image                  = "ubuntu-2204-jammy-v20230908"
+    gcp_zone               = "asia-northeast1-a"
+    service_account_scopes = ["cloud-platform"]
+    subnetwork             = module.subnet.subnet_id
 
-     # Enable public IP only if enable_public_ip is true
-      enable_public_ip = true
-      metadata = {
+    # Enable public IP only if enable_public_ip is true
+    enable_public_ip = true
+    metadata = {
       ssh-keys = <<EOF
-      test:ssh-rsa AAAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxbLLNM= bittu@hp
+        test:ssh-rsa AAAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxbLLNM= bittu@hp
       EOF
-   }
+    }
   }
+
   ```
