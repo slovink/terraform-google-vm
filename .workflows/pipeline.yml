@@ -1,0 +1,97 @@
+parameters:
+  - name: agentPool
+    type: string
+    default: Azure Pipelines
+    values:
+      - "Azure Pipelines"
+      - "Slovink-Selfhosted-Agent"
+
+trigger:
+  - main
+
+variables:
+  - name: gcp_bucket
+    value: slovink-hyperscaler
+  - name: terraformVersion
+    value: 1.9.5
+  - name: authenticationFileName
+    value: slovink-hyperscaler.json
+  - name: projectName
+    value: "Slovink hyperscaler"
+  - name: projectId
+    value: "slovink-hyperscaler"
+  - name: platformName
+    value: "google"
+  - name: environment
+    value: "development"
+  - name: region
+    value: "us-east1"
+  - name: zone
+    value: "us-east1-b"
+  - name: agentPoolName
+    value: ${{ parameters.agentPool }}
+
+pool:
+  name: $(agentPoolName)
+
+stages:
+  - stage: Prepare
+    displayName: Initialization
+    jobs:
+      - job: prepare
+        steps:
+          - task: TerraformInstaller@1
+            displayName: Install Terraform
+            inputs:
+              terraformVersion: $(terraformVersion)
+
+          - script: |
+              rm -rf *
+            displayName: Clean workspace
+
+          - task: DownloadSecureFile@1
+            name: development
+            displayName: Get GCP Secrets
+            inputs:
+              secureFile: $(authenticationFileName)
+
+          - script: |
+              cp $(development.secureFilePath) .
+            displayName: Copy secrets file to workspace
+
+  - stage: vm
+    dependsOn: Prepare
+    displayName: Virtual Machine Provisioning
+    jobs:
+      - job: virtual_machine
+        steps:
+          - task: TerraformCLI@0
+            displayName: Terraform Initialize
+            inputs:
+              command: init
+              workingDirectory: $(System.DefaultWorkingDirectory)/examples
+              backendType: gcs
+              backendGcsCredentials: $(authenticationFileName)
+              backendGcsBucket: $(gcp_bucket)
+              backendGcsPrefix: $(projectId)/$(platformName)/network.infrax.tfstate
+
+          - task: JasonBJohnson.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+            displayName: Terraform Plan
+            inputs:
+              command: plan
+              workingDirectory: $(System.DefaultWorkingDirectory)/examples
+              environmentServiceNameAzureRM: $(serviceConnection)
+              providerGoogleCredentials: $(authenticationFileName)
+              providerGoogleProject: $(projectName)
+              providerGoogleRegion: $(region)
+              commandOptions: '-var-file="$(System.DefaultWorkingDirectory)/terraform.tfvars"'
+
+          - task: JasonBJohnson.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+            displayName: Terraform Apply
+            inputs:
+              command: apply
+              workingDirectory: $(System.DefaultWorkingDirectory)/examples
+              providerGoogleCredentials: $(authenticationFileName)
+              providerGoogleProject: $(projectName)
+              providerGoogleRegion: $(region)
+              commandOptions: '-var-file="$(System.DefaultWorkingDirectory)/terraform.tfvars"'
