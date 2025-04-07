@@ -69,7 +69,7 @@ stages:
             displayName: Terraform Initialize
             inputs:
               command: init
-              workingDirectory: $(System.DefaultWorkingDirectory)/examples
+              workingDirectory: $(System.DefaultWorkingDirectory)/example
               backendType: gcs
               backendGcsCredentials: $(authenticationFileName)
               backendGcsBucket: $(gcp_bucket)
@@ -79,7 +79,7 @@ stages:
             displayName: Terraform Plan
             inputs:
               command: plan
-              workingDirectory: $(System.DefaultWorkingDirectory)/examples
+              workingDirectory: $(System.DefaultWorkingDirectory)/example
               environmentServiceNameAzureRM: $(serviceConnection)
               providerGoogleCredentials: $(authenticationFileName)
               providerGoogleProject: $(projectName)
@@ -90,7 +90,7 @@ stages:
             displayName: Terraform Apply
             inputs:
               command: apply
-              workingDirectory: $(System.DefaultWorkingDirectory)/examples
+              workingDirectory: $(System.DefaultWorkingDirectory)/example
               providerGoogleCredentials: $(authenticationFileName)
               providerGoogleProject: $(projectName)
               providerGoogleRegion: $(region)
