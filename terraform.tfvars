@@ -1,2 +1,2 @@
-  name                                      = "ops"
-  environment                               = "test"
+name        = "ops"
+environment = "test"

@@ -1,5 +1,4 @@
 provider "google" {
-  # project = "testing-gcp-ops"
   project = "slovink-hyperscaler"
   region  = "asia-northeast1"
   zone    = "asia-northeast1-a"
@@ -9,7 +8,7 @@ provider "google" {
 ##### vpc module call.
 #####==============================================================================
 module "vpc" {
-  source                                    = "git::https://github.com/slovink/terraform-google-network.git?ref=v1.0.0"
+  source                                    = "git::https://github.com/slovink/terraform-google-network.git?ref=1.0.0"
   name                                      = "ops"
   environment                               = "test"
   routing_mode                              = "REGIONAL"
@@ -20,11 +19,10 @@ module "vpc" {
 ##### subnet module call.
 #####==============================================================================
 module "subnet" {
-  source        = "git::https://github.com/slovink/terraform-google-subnets.git?ref=v1.0.0"
+  source        = "git::https://github.com/slovink/terraform-google-subnets.git?ref=feature/precommit-134"
   name          = "ops"
   environment   = "test"
   subnet_names  = ["subnet-ops"]
-  gcp_region    = "asia-northeast1"
   network       = module.vpc.vpc_id
   ip_cidr_range = ["10.10.1.0/24"]
 }
@@ -51,21 +49,21 @@ module "firewall" {
 #####==============================================================================
 module "compute_instance" {
   source                 = "../"
-  name                   = "ops"
+  name                   = "app"
   environment            = "test"
   instance_count         = 1
+  zone                   = "asia-northeast1-a"
   instance_tags          = ["foo", "bar"]
   machine_type           = "e2-small"
   image                  = "ubuntu-2204-jammy-v20230908"
-  gcp_zone               = "asia-northeast1-a"
   service_account_scopes = ["cloud-platform"]
   subnetwork             = module.subnet.subnet_id
+  network                = module.vpc.vpc_id
 
-  # Enable public IP only if enable_public_ip is true
-  enable_public_ip = true
+  enable_public_ip = true # Enable public IP only if enable_public_ip is true
   metadata = {
     ssh-keys = <<EOF
-      test:ssh-rsa AAAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxbLLNM= bittu@hp
+      ssh-rsa AAAAB3NzaC1yc2EAAAADXODCWBO6Vtu7yegtkUEgTjk5gQ== krishan.yadav@slovink.com
     EOF
   }
 }
