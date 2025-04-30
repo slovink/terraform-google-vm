@@ -141,7 +141,7 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 | <a name="input_labels"></a> [labels](#input\_labels) | A map of labels to assign to the resource, such as environment or other metadata. | `map(string)` | <pre>{<br>  "environment": "production"<br>}</pre> | no |
 | <a name="input_local_disks"></a> [local\_disks](#input\_local\_disks) | Flag to determine if scratch disk should be created | `bool` | `false` | no |
 | <a name="input_machine_type"></a> [machine\_type](#input\_machine\_type) | Machine type to create, e.g. n1-standard-1 | `string` | `""` | no |
-| <a name="input_managedby"></a> [managedby](#input\_managedby) | ManagedBy, e.g. 'info@cypik.com'. | `string` | `"info@cypik.com"` | no |
+| <a name="input_managedby"></a> [managedby](#input\_managedby) | ManagedBy, e.g. 'slovink.com'. | `string` | `"slovink.com"` | no |
 | <a name="input_metadata"></a> [metadata](#input\_metadata) | Metadata, provided as a map | `map(string)` | `{}` | no |
 | <a name="input_metadata_startup_script"></a> [metadata\_startup\_script](#input\_metadata\_startup\_script) | User startup script to run when instances spin up | `string` | `""` | no |
 | <a name="input_mode"></a> [mode](#input\_mode) | Specifies the access mode for the device. Options are READ\_WRITE or READ\_ONLY. | `string` | `"READ_WRITE"` | no |
@@ -154,7 +154,7 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 | <a name="input_nic_type"></a> [nic\_type](#input\_nic\_type) | Specifies the network interface card (NIC) type, such as GVNIC or VIRTIO. | `string` | `"GVNIC"` | no |
 | <a name="input_public_ptr_domain_name"></a> [public\_ptr\_domain\_name](#input\_public\_ptr\_domain\_name) | Public PTR domain name for the instance | `string` | `""` | no |
 | <a name="input_queue_count"></a> [queue\_count](#input\_queue\_count) | Specifies the number of queues for the NIC. Default is 1. | `number` | `1` | no |
-| <a name="input_repository"></a> [repository](#input\_repository) | Terraform current module repo | `string` | `"https://github.com/cypik/terraform-google-vm"` | no |
+| <a name="input_repository"></a> [repository](#input\_repository) | Terraform current module repo | `string` | `"https://github.com/slovink/terraform-google-vm"` | no |
 | <a name="input_service_account_email"></a> [service\_account\_email](#input\_service\_account\_email) | Service account email | `string` | `""` | no |
 | <a name="input_service_account_scopes"></a> [service\_account\_scopes](#input\_service\_account\_scopes) | Service account scopes | `list(string)` | <pre>[<br>  "https://www.googleapis.com/auth/cloud-platform"<br>]</pre> | no |
 | <a name="input_shielded_instance_config"></a> [shielded\_instance\_config](#input\_shielded\_instance\_config) | Shielded instance configuration options | `map(bool)` | <pre>{<br>  "enable_integrity_monitoring": true,<br>  "enable_secure_boot": false,<br>  "enable_vtpm": true<br>}</pre> | no |

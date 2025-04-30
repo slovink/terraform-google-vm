@@ -18,8 +18,8 @@ variable "label_order" {
 
 variable "managedby" {
   type        = string
-  default     = "info@cypik.com"
-  description = "ManagedBy, e.g. 'info@cypik.com'."
+  default     = "slovink.com"
+  description = "ManagedBy, e.g. 'slovink.com'."
 }
 
 variable "extra_tags" {
@@ -30,7 +30,7 @@ variable "extra_tags" {
 
 variable "repository" {
   type        = string
-  default     = "https://github.com/cypik/terraform-google-vm"
+  default     = "https://github.com/slovink/terraform-google-vm"
   description = "Terraform current module repo"
 }
 
